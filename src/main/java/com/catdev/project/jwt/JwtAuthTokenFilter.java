@@ -1,4 +1,4 @@
-package com.catdev.project.jwt.payload;
+package com.catdev.project.jwt;
 
 import com.catdev.project.respository.UserRepository;
 import com.catdev.project.security.service.UserDetailsServiceImpl;

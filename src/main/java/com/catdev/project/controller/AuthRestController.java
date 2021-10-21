@@ -7,15 +7,18 @@ import com.catdev.project.entity.UserEntity;
 import com.catdev.project.exception.ErrorResponse;
 import com.catdev.project.exception.ProductException;
 import com.catdev.project.exception.TokenRefreshException;
-import com.catdev.project.jwt.payload.JwtProvider;
-import com.catdev.project.jwt.payload.JwtResponse;
+import com.catdev.project.jwt.JwtProvider;
+import com.catdev.project.jwt.JwtResponse;
 import com.catdev.project.jwt.payload.request.TokenRefreshRequest;
 import com.catdev.project.jwt.payload.response.TokenRefreshResponse;
 import com.catdev.project.readable.form.LoginForm;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.security.service.UserPrinciple;
+import com.catdev.project.service.MailService;
 import com.catdev.project.service.RefreshTokenService;
 import com.catdev.project.service.UserService;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -43,6 +45,9 @@ public class AuthRestController {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    MailService mailService;
 
     @Autowired
     UserService userService;
@@ -109,7 +114,8 @@ public class AuthRestController {
                         userPrinciple.getId(),
                         userPrinciple.getUsername(),
                         userPrinciple.getEmail(),
-                        roles)
+                        roles
+                )
         );
         responseDto.setRemainTime(jwtProvider.getRemainTimeFromJwtToken(jwt));
 
@@ -117,7 +123,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
+    public ResponseDto<?> refreshToken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -125,14 +131,21 @@ public class AuthRestController {
                 .map(RefreshTokenEntity::getUserEntity)
                 .map(user -> {
                     String token = jwtProvider.generateTokenFromEmail(user.getEmail());
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                    userService.saveToken(token,user);
+                    Long timeRemain = jwtProvider.getRemainTimeFromJwtToken(token);
+                    ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
+                    responseDto.setRemainTime(timeRemain);
+                    responseDto.setMessageVN("Thanh Cong");
+                    responseDto.setErrorCode(200);
+                    responseDto.setContent(new TokenRefreshResponse(token, requestRefreshToken));
+                    return responseDto;
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseDto<?> logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new ProductException(
@@ -146,15 +159,41 @@ public class AuthRestController {
         userService.clearToken(userEntity);
 
         new SecurityContextLogoutHandler().logout(request,response,authentication);
+
+        ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
+        responseDto.setRemainTime(0L);
+        responseDto.setMessageVN("Thanh Cong");
+        responseDto.setErrorCode(200);
+        return responseDto;
+
     }
 
+    @SneakyThrows
     @PostMapping("/forgot")
-    public void forgotPassword(HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
+    public ResponseDto<?> forgotPassword(@RequestParam(name = "email",defaultValue = "") String email) {
+        String newPasswordGenerate = "Mercon@2021";
+
+        if (StringUtils.isBlank(email)) {
             throw new ProductException(
-                    new ErrorResponse());
+                    new ErrorResponse()
+            );
         }
-        new SecurityContextLogoutHandler().logout(request,response,authentication);
+
+        UserEntity userEntity = userService.findUserEntityByEmail(email);
+        if(userEntity == null){
+            throw new ProductException(
+                    new ErrorResponse()
+            );
+        }
+
+        userEntity.setPassword(encoder.encode(newPasswordGenerate));
+
+        mailService.sendEmail(userEntity.getEmail(),"Forgot Password","New password is : " + newPasswordGenerate);
+
+        ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
+        responseDto.setRemainTime(0L);
+        responseDto.setMessageVN("Thanh Cong");
+        responseDto.setErrorCode(200);
+        return responseDto;
     }
 }

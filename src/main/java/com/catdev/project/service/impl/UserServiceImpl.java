@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,6 +56,16 @@ public class UserServiceImpl implements UserService {
         userEntity.setTokenStatus(false);
         userRepository.save(userEntity);
         return userEntity;
+    }
+
+    @Override
+    public void clearAllToken() {
+        List<UserEntity> userEntities = userRepository.findAll().stream().peek(x -> {
+            x.setTokenStatus(false);
+            x.setAccessToken(null);
+        }).toList();
+
+        userRepository.saveAll(userEntities);
     }
 
     @Override

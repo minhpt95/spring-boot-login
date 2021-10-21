@@ -1,7 +1,7 @@
 package com.catdev.project.security.config;
 
-import com.catdev.project.jwt.payload.JwtAuthEntryPoint;
-import com.catdev.project.jwt.payload.JwtAuthTokenFilter;
+import com.catdev.project.jwt.JwtAuthEntryPoint;
+import com.catdev.project.jwt.JwtAuthTokenFilter;
 import com.catdev.project.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,7 @@
-package com.catdev.project.jwt.payload;
+package com.catdev.project.jwt;
 
 
+import io.jsonwebtoken.Claims;
 import lombok.Getter;
 import lombok.Setter;
 

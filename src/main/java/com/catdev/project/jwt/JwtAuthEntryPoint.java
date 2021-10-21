@@ -1,4 +1,4 @@
-package com.catdev.project.jwt.payload;
+package com.catdev.project.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

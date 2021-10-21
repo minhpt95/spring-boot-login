@@ -1,4 +1,4 @@
-package com.catdev.project.jwt.payload;
+package com.catdev.project.jwt;
 
 import com.catdev.project.security.service.UserPrinciple;
 import io.jsonwebtoken.*;

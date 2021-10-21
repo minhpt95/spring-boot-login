@@ -15,6 +15,8 @@ public interface UserService {
 
     UserEntity clearToken(UserEntity userEntity);
 
+    void clearAllToken();
+
     UserEntity findUserEntityByEmailForLogin(String email);
 
     UserEntity findUserEntityByEmail(String email);
