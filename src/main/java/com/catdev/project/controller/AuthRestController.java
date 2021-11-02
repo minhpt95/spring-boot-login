@@ -17,6 +17,7 @@ import com.catdev.project.security.service.UserPrinciple;
 import com.catdev.project.service.MailService;
 import com.catdev.project.service.RefreshTokenService;
 import com.catdev.project.service.UserService;
+import com.catdev.project.util.EmailValidateUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -186,9 +189,17 @@ public class AuthRestController {
             );
         }
 
-        userEntity.setPassword(encoder.encode(newPasswordGenerate));
 
-        mailService.sendEmail(userEntity.getEmail(),"Forgot Password","New password is : " + newPasswordGenerate);
+
+        var isValidEmail = isAddressValid(email);
+
+        if(!isValidEmail){
+            throw new ProductException(
+                    new ErrorResponse()
+            );
+        }
+
+        mailService.sendEmail(email,"Forgot Password","New password is : " + newPasswordGenerate);
 
         ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);

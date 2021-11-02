@@ -25,10 +25,18 @@ public interface UserService {
                                          int pageSize
     );
     UserDto createUser(CreateUserForm form);
+
     Boolean confirmEmail(Long id, Instant timeOut);
+
     Boolean forgotPassword(String email);
+
     Boolean changePassword(Long id);
+
     Boolean changeStatus(Long id,Boolean status);
+
     UserDto updateUser(UpdateUserForm form);
 
+    void addCusBuy();
+
+    void addCusSell();
 }

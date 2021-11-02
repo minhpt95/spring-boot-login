@@ -1,6 +1,8 @@
 package com.catdev.project;
 
 import com.catdev.project.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +19,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 public class ProjectApplication {
 
+    private static final Logger logger = LogManager.getLogger(ProjectApplication.class);
+
     @Autowired
     private UserService userService;
 
@@ -27,5 +31,6 @@ public class ProjectApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void clearToken(){
         userService.clearAllToken();
+        logger.info("Hello from Log4j 2 - num : {}", () -> "clear Token");
     }
 }

@@ -1,8 +1,8 @@
 package com.catdev.project.service.impl;
 
 import com.catdev.project.service.MailService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @Service
 public class MailServiceImpl implements MailService {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
     private JavaMailSender sender;

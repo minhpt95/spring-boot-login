@@ -2,8 +2,8 @@ package com.catdev.project.jwt;
 
 import com.catdev.project.security.service.UserPrinciple;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private static final Logger logger = LogManager.getLogger(JwtProvider.class);
 
     @Value("${catdev.app.jwtSecret}")
     private String jwtSecret;
