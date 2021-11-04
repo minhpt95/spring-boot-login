@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -24,6 +25,9 @@ public class ProjectApplication {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Environment env;
+
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
     }
@@ -32,5 +36,6 @@ public class ProjectApplication {
     public void clearToken(){
         userService.clearAllToken();
         logger.info("Hello from Log4j 2 - num : {}", () -> "clear Token");
+        logger.info("Active Profile : {}", () -> env.getActiveProfiles());
     }
 }

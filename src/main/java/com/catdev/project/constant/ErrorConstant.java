@@ -2,11 +2,11 @@ package com.catdev.project.constant;
 
 public class ErrorConstant {
     public class Code{
-        public static final int LOGIN_INVALID = 01;
-        public static final int USER_INACTIVE = 02;
-        public static final int SUCCESS = 03;
-        public static final int NOT_FOUND = 04;
-        public static final int ALREADY_EXISTS = 05;
+        public static final int LOGIN_INVALID = 1;
+        public static final int USER_INACTIVE = 2;
+        public static final int SUCCESS = 3;
+        public static final int NOT_FOUND = 4;
+        public static final int ALREADY_EXISTS = 5;
     }
 
     public class Type{
@@ -28,8 +28,6 @@ public class ErrorConstant {
         public static final String END_OF_TIME ="end of time.";
         public static final String ALREADY_EXISTS_BRANCH = "Already exists branch or department.";
         public static final String USER_EXISTS ="User exists organization";
-
-
     }
 
     public class MessageVI{
