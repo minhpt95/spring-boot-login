@@ -14,6 +14,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableSwagger2
 @EnableScheduling
@@ -35,7 +39,12 @@ public class ProjectApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void clearToken(){
         userService.clearAllToken();
-        logger.info("Hello from Log4j 2 - num : {}", () -> "clear Token");
-        logger.info("Active Profile : {}", () -> env.getActiveProfiles());
+        logger.info("Clear Token After Start Application : {}", () -> "clear Token");
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void setApplicationTimeZone(){
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        logger.info("TimeZone : {} , Instant : {} , Timestamp : {}", TimeZone::getDefault, Instant::now,() -> Timestamp.from(Instant.now()));
     }
 }

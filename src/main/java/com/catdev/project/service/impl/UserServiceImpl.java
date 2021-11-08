@@ -4,23 +4,17 @@ import com.catdev.project.constant.CommonConstant;
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ListResponseDto;
 import com.catdev.project.dto.UserDto;
-import com.catdev.project.entity.CustomerBuyEntity;
-import com.catdev.project.entity.CustomerSellEntity;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.exception.ErrorResponse;
 import com.catdev.project.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
-import com.catdev.project.respository.CustomerBuyRepository;
-import com.catdev.project.respository.CustomerSellRepository;
 import com.catdev.project.respository.UserRepository;
 import com.catdev.project.service.UserService;
 import com.catdev.project.util.CommonUtil;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,9 +23,6 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,17 +31,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    JavaMailSender emailSender;
-
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    CustomerBuyRepository customerBuyRepository;
-
-    @Autowired
-    CustomerSellRepository customerSellRepository;
-
 
     @Override
     public UserEntity saveToken(String token, UserEntity userEntity) {
@@ -60,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
         return userEntity;
     }
-
 
     @Override
     public UserEntity clearToken(UserEntity userEntity) {
@@ -239,40 +219,5 @@ public class UserServiceImpl implements UserService {
 
         userEntity = userRepository.save(userEntity);
         return convertToDto(userEntity);
-    }
-
-    @SneakyThrows
-    @Override
-    @Transactional
-    public void addCusBuy() {
-        CustomerBuyEntity customerBuyEntity = new CustomerBuyEntity();
-        customerBuyEntity.setQuantity(10L);
-        customerBuyRepository.save(customerBuyEntity);
-        sendEmail();
-
-        CustomerBuyEntity customerBuyEntity1 = new CustomerBuyEntity();
-        customerBuyEntity1.setQuantity(10L);
-        customerBuyRepository.save(customerBuyEntity1);
-    }
-
-
-    @SneakyThrows
-    @Override
-    @Transactional
-    public void addCusSell() {
-        CustomerSellEntity customerSellEntity = new CustomerSellEntity();
-        customerSellEntity.setQuantity(10L);
-        customerSellRepository.save(customerSellEntity);
-        sendEmail();
-    }
-
-    private void sendEmail() throws Exception {
-        Executors.newSingleThreadExecutor().execute(() -> {
-           Long totalBuy = customerBuyRepository.totalQuantityInCustomerBuy();
-           Long totalSell = customerSellRepository.totalQuantityInCustomerSell();
-           System.out.println(totalBuy + ";" + totalSell);
-        });
-
-        throw new Exception();
     }
 }

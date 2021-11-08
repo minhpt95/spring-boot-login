@@ -35,8 +35,4 @@ public interface UserService {
     Boolean changeStatus(Long id,Boolean status);
 
     UserDto updateUser(UpdateUserForm form);
-
-    void addCusBuy();
-
-    void addCusSell();
 }
