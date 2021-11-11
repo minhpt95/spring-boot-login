@@ -20,6 +20,8 @@ import com.catdev.project.service.UserService;
 import com.catdev.project.util.EmailValidateUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +65,8 @@ public class AuthRestController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    private static final Logger logger = LogManager.getLogger(AuthRestController.class);
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody CreateUserForm createUserForm) {
@@ -176,7 +180,10 @@ public class AuthRestController {
     public ResponseDto<?> forgotPassword(@RequestParam(name = "email",defaultValue = "") String email) {
         String newPasswordGenerate = "Mercon@2021";
 
+        logger.info("start forgotPassword() => {}",() -> email);
+
         if (StringUtils.isBlank(email)) {
+            logger.error("parameter email empty => {}",() -> email);
             throw new ProductException(
                     new ErrorResponse()
             );
@@ -184,6 +191,9 @@ public class AuthRestController {
 
         UserEntity userEntity = userService.findUserEntityByEmail(email);
         if(userEntity == null){
+
+            logger.error("User with email not found in database => {}",() -> email);
+
             throw new ProductException(
                     new ErrorResponse()
             );
@@ -194,6 +204,7 @@ public class AuthRestController {
         var isValidEmail = isAddressValid(email);
 
         if(!isValidEmail){
+            logger.error("email not valid => {}",() -> email);
             throw new ProductException(
                     new ErrorResponse()
             );
@@ -201,7 +212,7 @@ public class AuthRestController {
 
         mailService.sendEmail(email,"Forgot Password","New password is : " + newPasswordGenerate);
 
-        ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
+        ResponseDto<?> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);
         responseDto.setMessageVN("Thanh Cong");
         responseDto.setErrorCode(200);

@@ -57,6 +57,10 @@ public class UserServiceImpl implements UserService {
             x.setAccessToken(null);
         }).toList();
 
+        if(userEntities.isEmpty()){
+            return;
+        }
+
         userRepository.saveAll(userEntities);
     }
 
@@ -78,8 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findUserEntityByEmail(String email) {
-        UserEntity UserEntity = userRepository.findByEmail(email).orElse(null);
-        return UserEntity;
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     private UserDto convertToDto(UserEntity userEntity) {
