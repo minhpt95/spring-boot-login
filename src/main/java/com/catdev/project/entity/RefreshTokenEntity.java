@@ -31,11 +31,11 @@ public class RefreshTokenEntity {
     private Instant createdDate;
 
     @Column
-    private UUID createdBy;
+    private Long createdBy;
 
     @Column
     private Instant modifiedDate;
 
     @Column
-    private UUID modifiedBy;
+    private Long modifiedBy;
 }

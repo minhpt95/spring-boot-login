@@ -63,13 +63,13 @@ public class UserEntity {
     private Instant createdDate;
 
     @Column
-    private UUID createdBy;
+    private Long createdBy;
 
     @Column
     private Instant modifiedDate;
 
     @Column
-    private UUID modifiedBy;
+    private Long modifiedBy;
 
     @Column
     private String transactionPassword;
