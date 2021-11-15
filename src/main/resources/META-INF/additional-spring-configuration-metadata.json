@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "catdev.app.refreshTokenExpiration",
+      "type": "java.lang.String",
+      "description": "Description for catdev.app.refreshTokenExpiration."
+  }
+] }
