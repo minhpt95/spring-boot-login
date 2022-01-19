@@ -13,7 +13,8 @@ import java.util.UUID;
 @Setter
 public class RefreshTokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "spring_seq")
+    @SequenceGenerator(name = "spring_seq",sequenceName = "refresh_token_seq",allocationSize = 1)
     @Column(updatable = false, nullable = false)
     private Long id;
 

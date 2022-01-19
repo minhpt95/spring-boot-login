@@ -24,6 +24,7 @@ public class ResponseHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(403);
         errorResponse.setMessageVN("Bạn không đủ quyền để truy cập vào đây");
+        errorResponse.setMessageEN("");
         return errorResponse;
     }
 

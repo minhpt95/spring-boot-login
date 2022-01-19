@@ -41,6 +41,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+             <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -94,7 +98,15 @@
             <scope>test</scope>
         </dependency>
 
-<!--        replace log4j to log4j2-->
+        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+
+
+        <!--replace log4j to log4j2-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,7 +130,7 @@
             <version>2.4.4</version>
         </dependency>
 
-<!--        jwt token-->
+        <!--jwt token-->
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -126,14 +138,20 @@
             <version>0.9.1</version>
         </dependency>
 
-<!--        java common-->
+        <!--java common-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-<!--        swagger-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+
+        <!--swagger-->
 
         <dependency>
             <groupId>io.springfox</groupId>
@@ -155,6 +173,14 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>3.4.1</version>
+        </dependency>
+
+        <!--Đọc Số-->
+
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>70.1</version>
         </dependency>
 
     </dependencies>
