@@ -2,6 +2,7 @@ package com.catdev.project.controller;
 
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
+import com.catdev.project.dto.UserDto;
 import com.catdev.project.entity.RefreshTokenEntity;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.exception.ErrorResponse;
@@ -18,7 +19,9 @@ import com.catdev.project.service.MailService;
 import com.catdev.project.service.RefreshTokenService;
 import com.catdev.project.service.UserService;
 import com.catdev.project.util.EmailValidateUtil;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,43 +39,37 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@AllArgsConstructor
+@Log4j2
 @RequestMapping("/api/auth")
 public class AuthRestController {
 
-    @Autowired
-    RefreshTokenService refreshTokenService;
+    final RefreshTokenService refreshTokenService;
+    final AuthenticationManager authenticationManager;
+    final MailService mailService;
+    final UserService userService;
+    final PasswordEncoder encoder;
+    final JwtProvider jwtProvider;
+    final ModelMapper modelMapper;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    JwtProvider jwtProvider;
-
-    @Autowired
-    ModelMapper modelMapper;
-
-    private static final Logger logger = LogManager.getLogger(AuthRestController.class);
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody CreateUserForm createUserForm) {
-        userService.createUser(createUserForm);
+    public ResponseEntity<ResponseDto> registerUser(@Valid @RequestBody CreateUserForm createUserForm) {
+        UserDto createUserDto = userService.createUser(createUserForm);
 
-        return ResponseEntity.ok().body("User registered successfully!");
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(createUserDto);
+        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
+        responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
+        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping("/login")
@@ -142,8 +139,8 @@ public class AuthRestController {
                     Long timeRemain = jwtProvider.getRemainTimeFromJwtToken(token);
                     ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
                     responseDto.setRemainTime(timeRemain);
-                    responseDto.setMessageVN("Thanh Cong");
-                    responseDto.setErrorCode(200);
+                    responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+                    responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
                     responseDto.setContent(new TokenRefreshResponse(token, requestRefreshToken));
                     return responseDto;
                 })
@@ -169,8 +166,8 @@ public class AuthRestController {
 
         ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);
-        responseDto.setMessageVN("Thanh Cong");
-        responseDto.setErrorCode(200);
+        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         return responseDto;
 
     }
@@ -178,44 +175,20 @@ public class AuthRestController {
     @SneakyThrows
     @PostMapping("/forgot")
     public ResponseDto<?> forgotPassword(@RequestParam(name = "email",defaultValue = "") String email) {
-        String newPasswordGenerate = "Mercon@2021";
-
-        logger.info("start forgotPassword() => {}",() -> email);
 
         if (StringUtils.isBlank(email)) {
-            logger.error("parameter email empty => {}",() -> email);
+            log.error("parameter email empty => {}",() -> email);
             throw new ProductException(
                     new ErrorResponse()
             );
         }
 
-        UserEntity userEntity = userService.findUserEntityByEmail(email);
-        if(userEntity == null){
-
-            logger.error("User with email not found in database => {}",() -> email);
-
-            throw new ProductException(
-                    new ErrorResponse()
-            );
-        }
-
-
-
-        var isValidEmail = isAddressValid(email);
-
-        if(!isValidEmail){
-            logger.error("email not valid => {}",() -> email);
-            throw new ProductException(
-                    new ErrorResponse()
-            );
-        }
-
-        mailService.sendEmail(email,"Forgot Password","New password is : " + newPasswordGenerate);
+        userService.forgotPassword(email);
 
         ResponseDto<?> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);
-        responseDto.setMessageVN("Thanh Cong");
-        responseDto.setErrorCode(200);
+        responseDto.setMessageEN(ErrorConstant.Code.SUCCESS);
+        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         return responseDto;
     }
 }

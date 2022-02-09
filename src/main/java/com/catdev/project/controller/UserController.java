@@ -3,17 +3,16 @@ package com.catdev.project.controller;
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
 import com.catdev.project.dto.UserDto;
-import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -25,20 +24,13 @@ public class UserController {
     @Autowired
     JavaMailSender emailSender;
 
-    @PutMapping(value = "/confirmEmail/{id}")
-    public  ResponseDto<Boolean> confirmEmail(@PathVariable Long id , Instant timeOut){
+    @PutMapping(value = "/activateEmail/{id}")
+    public  ResponseDto<Boolean> activateEmail(@PathVariable Long id){
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
-        responseDto.setContent(userService.confirmEmail(id,timeOut));
-        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
-        responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
-        return responseDto;
-    }
-    @PutMapping(value = "/forgotPassword/{email}")
-    public  ResponseDto<Boolean> forgotPassword(@PathVariable String email){
-        ResponseDto<Boolean> responseDto = new ResponseDto<>();
-        responseDto.setContent(userService.forgotPassword(email));
+
+        Instant instant = Instant.now();
+
+        responseDto.setContent(userService.activateEmail(id,instant));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
         responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
@@ -56,6 +48,7 @@ public class UserController {
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
     }
+
     @PutMapping(value = "/changeStatus/{id}")
     public  ResponseDto<Boolean> changeStatus(@PathVariable Long id ,Boolean status){
         ResponseDto<Boolean> responseDto = new ResponseDto<>();

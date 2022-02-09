@@ -21,5 +21,4 @@ public class UserDto {
     private String permanentAddress;
     private String description;
     private boolean isEnabled;
-    private String accountTypeName;
 }

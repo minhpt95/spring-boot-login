@@ -10,10 +10,16 @@ import com.catdev.project.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.respository.UserRepository;
+import com.catdev.project.service.MailService;
 import com.catdev.project.service.UserService;
 import com.catdev.project.util.CommonUtil;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,21 +30,30 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
+
 @Service
+@AllArgsConstructor
+@Log4j2
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    final
     PasswordEncoder passwordEncoder;
 
-    @Autowired
+    final
     UserRepository userRepository;
+
+    final
+    MailService mailService;
+
+    final
+    Environment env;
 
     @Override
     public UserEntity saveToken(String token, UserEntity userEntity) {
         userEntity.setAccessToken(token);
         userEntity.setTokenStatus(true);
         userEntity = userRepository.saveAndFlush(userEntity);
-
         return userEntity;
     }
 
@@ -103,7 +118,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListResponseDto<UserDto> getUserList(int pageIndex, int pageSize) {
         Page<UserEntity> page;
-        page = userRepository.findAll(CommonUtil.buildPageable(pageIndex, pageSize, null, null));
+        page = userRepository.findAll(CommonUtil.buildPageable(pageIndex, pageSize));
         Page<UserDto> userDtoPage = page.map(this::convertToDto);
         ListResponseDto<UserDto> result = new ListResponseDto<>();
         return result.buildResponseList(userDtoPage, pageSize, pageIndex, userDtoPage.getContent());
@@ -111,6 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @SneakyThrows
     public UserDto createUser(CreateUserForm form) {
         List<UserEntity> userEntityList = userRepository.findAllByEmail(form.getEmail());
         if (!userEntityList.isEmpty()) {
@@ -124,52 +140,95 @@ public class UserServiceImpl implements UserService {
             );
         }
         UserEntity userEntity = new UserEntity();
+
+        userEntity.setCurrentAddress(form.getCurrentAddress());
+        userEntity.setDescription(form.getDescription());;
+
         userEntity.setEmail(form.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(form.getPassword()));
-        userEntity.setEnabled(true);
         userEntity.setIdentityCard(form.getIdentityCard());
-        Instant createDate = Instant.now();
-        userEntity.setCreatedDate(createDate);
+        userEntity.setEnabled(false);
+        userEntity.setName(form.getName());
+        userEntity.setPassword(passwordEncoder.encode(form.getPassword()));
+        userEntity.setPermanentAddress(form.getPermanentAddress());
+        userEntity.setPhoneNumber1(form.getPhoneNumber1());
+        userEntity.setPhoneNumber2(form.getPhoneNumber2());
+
+        userEntity.setCreatedDate(Instant.now());
+
         userEntity = userRepository.save(userEntity);
+
+        mailService.sendEmail(userEntity.getEmail(),"Confirm your email address on Spring Boot App","Click this link to activate your account : " + env.getProperty("url.activate.account") + userEntity.getId());
+
         return convertToDto(userEntity);
     }
 
     @Override
-    public Boolean confirmEmail(Long id, Instant timeOut) {
+    public Boolean activateEmail(Long id, Instant currentTime) {
         UserEntity userEntity = userRepository.findUserEntityById(id);
         if (userEntity == null) {
-            throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, "userEntity"),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, "userEntity"),
-                    ErrorConstant.Type.FAILURE));
+            throw new ProductException(
+                    new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
+                    ErrorConstant.Type.FAILURE)
+            );
         }
-        Instant timeSend = userEntity.getCreatedDate();
-        Instant timePlus = timeSend.plusMillis(1800000);
-        if (timePlus.isBefore(timeOut)) {
-            throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
+        Instant timeCreate = userEntity.getCreatedDate();
+        Instant timeExpired = timeCreate.plusMillis(604800000);
+        if (timeExpired.isBefore(currentTime)) {
+            throw new ProductException(
+                    new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     ErrorConstant.MessageEN.END_OF_TIME,
                     ErrorConstant.MessageVI.END_OF_TIME,
-                    ErrorConstant.Type.FAILURE));
+                    ErrorConstant.Type.FAILURE)
+            );
         }
         userEntity.setEnabled(true);
-        String pwd = RandomStringUtils.random(12, CommonConstant.characters);
-        userEntity.setPassword(passwordEncoder.encode(pwd));
         userRepository.save(userEntity);
         return true;
     }
 
     @Override
+    @SneakyThrows
     public Boolean forgotPassword(String email) {
         UserEntity userEntity = userRepository.findUserEntityByEmail(email);
         if (userEntity == null) {
+
+            log.error("User with email not found in database => {}",() -> email);
+
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, "userEntity"),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, "userEntity"),
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, email),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, email),
                     ErrorConstant.Type.FAILURE));
         }
+
         String pwd = RandomStringUtils.random(12, CommonConstant.characters);
+
+        log.info("start forgotPassword()");
+
+        if (StringUtils.isBlank(email)) {
+            log.error("parameter email empty => {}",() -> email);
+            throw new ProductException(
+                    new ErrorResponse()
+            );
+        }
+
+        var isValidEmail = isAddressValid(email);
+
+        if(!isValidEmail){
+            log.error("email not valid => {}",() -> email);
+            throw new ProductException(
+                    new ErrorResponse()
+            );
+        }
+
+        mailService.sendEmail(email,"Forgot Password","New password is : " + pwd);
+
         userEntity.setPassword(passwordEncoder.encode(pwd));
         userRepository.save(userEntity);
+
+        mailService.sendEmail(userEntity.getEmail(),"Forgot Password","New password for " + userEntity.getEmail() + " is : " + pwd);
+
         return true;
     }
 
@@ -177,10 +236,12 @@ public class UserServiceImpl implements UserService {
     public Boolean changePassword(Long id) {
         UserEntity userEntity = userRepository.findUserEntityById(id);
         if (userEntity == null) {
-            throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, "userEntity"),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, "userEntity"),
-                    ErrorConstant.Type.FAILURE));
+            throw new ProductException(
+                    new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
+                    ErrorConstant.Type.FAILURE)
+            );
         }
         String pwd = RandomStringUtils.random(12, CommonConstant.characters);
         userEntity.setPassword(passwordEncoder.encode(pwd));
@@ -193,8 +254,8 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findUserEntityById(id);
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, "userEntity"),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, "userEntity"),
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
                     ErrorConstant.Type.FAILURE));
         }
         userEntity.setEnabled(status);

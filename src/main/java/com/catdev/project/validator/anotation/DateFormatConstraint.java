@@ -17,6 +17,8 @@ public @interface DateFormatConstraint {
 
     String datePattern() default DateConstant.DATE_PATTERN_DD_MM_YYYY;
 
+    boolean required() default true;
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};

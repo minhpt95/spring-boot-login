@@ -2,6 +2,7 @@ package com.catdev.project.security.service;
 
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.respository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -10,18 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     final
     private UserRepository userRepository;
-
-    final
-    private HttpServletRequest request;
-
-    public UserDetailsServiceImpl(UserRepository userRepository, HttpServletRequest request) {
-        this.userRepository = userRepository;
-        this.request = request;
-    }
 
     @Override
     @Transactional

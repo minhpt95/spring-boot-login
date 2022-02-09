@@ -34,37 +34,37 @@ public class MailServiceImpl implements MailService {
 
     @Override
     @Async
-    public void sendEmailAttach(String to, String subject, String body, String fileName, File file){
+    public void sendEmailAttach(String to, String subject, String body, String fileName, File file) {
         logger.info("start send email attach file; to: {}; subject: {}; fileName: {}", to, subject, fileName);
-        if(to.isBlank()) {
+        if (to.isBlank()) {
             logger.error(RECIPIENT_EMPTY);
-        }else {
+        } else {
             try {
                 String userName = env.getProperty("spring.mail.username");
                 MimeMessage message = sender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
                 helper.setFrom(userName, userName);
                 helper.setTo(to);
-                helper.setText(body,true);
+                helper.setText(body, true);
                 helper.setSubject(subject);
                 if (fileName != null && !fileName.trim().isEmpty() && null != file) {
                     helper.addAttachment(fileName, file);
                 }
                 sender.send(message);
-            }catch (MessagingException | MailException | UnsupportedEncodingException e){
-                logger.error(ERROR_SEND_EMAIL,() -> e);
+            } catch (MessagingException | MailException | UnsupportedEncodingException e) {
+                logger.error(ERROR_SEND_EMAIL, () -> e);
             }
         }
-        logger.info("end send email attach file; to: {}; subject: {}; fileName: {}",() -> to,() -> subject,() -> fileName);
+        logger.info("end send email attach file; to: {}; subject: {}; fileName: {}", () -> to, () -> subject, () -> fileName);
     }
 
     @Override
     @Async
-    public void sendEmailAttach(String[] to, String subject, String body, String fileName, File file){
-        logger.info("start send email attach file to multiple people; to: {}; subject: {}; fileName: {}", () -> Arrays.toString(to),() -> subject,() -> fileName);
-        if(to.length <= 0) {
+    public void sendEmailAttach(String[] to, String subject, String body, String fileName, File file) {
+        logger.info("start send email attach file to multiple people; to: {}; subject: {}; fileName: {}", () -> Arrays.toString(to), () -> subject, () -> fileName);
+        if (to.length <= 0) {
             logger.error(RECIPIENT_EMPTY);
-        }else {
+        } else {
             try {
                 String userName = env.getProperty("spring.mail.username");
                 MimeMessage message = sender.createMimeMessage();
@@ -77,19 +77,19 @@ public class MailServiceImpl implements MailService {
                     helper.addAttachment(fileName, file);
                 }
                 sender.send(message);
-            }catch (MessagingException | MailException | UnsupportedEncodingException e){
-                logger.error(ERROR_SEND_EMAIL,() -> e);
+            } catch (MessagingException | MailException | UnsupportedEncodingException e) {
+                logger.error(ERROR_SEND_EMAIL, () -> e);
             }
         }
-        logger.info("end send email attach file to multiple people; to: {}; subject: {}; fileName: {}",() -> Arrays.toString(to),() -> subject,() -> fileName);
+        logger.info("end send email attach file to multiple people; to: {}; subject: {}; fileName: {}", () -> Arrays.toString(to), () -> subject, () -> fileName);
     }
 
     @Override
     @Async
-    public void sendEmail(String to, String subject, String body){
-        if(to.isBlank()) {
+    public void sendEmail(String to, String subject, String body) {
+        if (to.isBlank()) {
             logger.error(RECIPIENT_EMPTY);
-        }else {
+        } else {
             try {
                 logger.info("start send email not attach file to: {}; subject: {};", to, subject);
                 String hostingName = env.getProperty("spring.mail.username");
@@ -101,21 +101,21 @@ public class MailServiceImpl implements MailService {
                 message.setText(body, "UTF-8", "html");
                 helper.setSubject(subject);
                 sender.send(message);
-            logger.info("end send email not attach file to: {}; subject: {};", to, subject);
-            }catch (MessagingException | MailException | UnsupportedEncodingException e){
-                logger.error(ERROR_SEND_EMAIL,() -> e);
+                logger.info("end send email not attach file to: {}; subject: {};", to, subject);
+            } catch (MessagingException | MailException | UnsupportedEncodingException e) {
+                logger.error(ERROR_SEND_EMAIL, () -> e);
             }
         }
     }
 
     @Override
     @Async
-    public void sendEmail(String[] to, String subject, String body){
-        if(to.length <= 0) {
+    public void sendEmail(String[] to, String subject, String body) {
+        if (to.length <= 0) {
             logger.error(RECIPIENT_EMPTY);
-        }else{
+        } else {
             try {
-                logger.info("start send email not attach multiple people file to: {}; subject: {};",() -> Arrays.toString(to),() -> subject);
+                logger.info("start send email not attach multiple people file to: {}; subject: {};", () -> Arrays.toString(to), () -> subject);
                 String userName = env.getProperty("spring.mail.username");
                 MimeMessage message = sender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -124,9 +124,9 @@ public class MailServiceImpl implements MailService {
                 helper.setTo(to);
                 helper.setSubject(subject);
                 sender.send(message);
-                logger.info("end send email not attach multiple people file to: {}; subject: {};",() -> Arrays.toString(to),() -> subject);
-            }catch (MessagingException | MailException | UnsupportedEncodingException e){
-                logger.error(ERROR_SEND_EMAIL,() -> e);
+                logger.info("end send email not attach multiple people file to: {}; subject: {};", () -> Arrays.toString(to), () -> subject);
+            } catch (MessagingException | MailException | UnsupportedEncodingException e) {
+                logger.error(ERROR_SEND_EMAIL, () -> e);
             }
         }
     }
@@ -134,11 +134,11 @@ public class MailServiceImpl implements MailService {
     @Override
     @Async
     public void sendEmail(String[] to, String from, String personal, String subject, String body) {
-        if(to.length <= 0) {
+        if (to.length <= 0) {
             logger.error(RECIPIENT_EMPTY);
-        }else{
+        } else {
             try {
-                logger.info("start send email not attach multiple people file to: {}; subject: {};",() -> Arrays.toString(to),() -> subject);
+                logger.info("start send email not attach multiple people file to: {}; subject: {};", () -> Arrays.toString(to), () -> subject);
                 MimeMessage message = sender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
                 message.setText(body, "UTF-8", "html");
@@ -146,9 +146,9 @@ public class MailServiceImpl implements MailService {
                 helper.setTo(to);
                 helper.setSubject(subject);
                 sender.send(message);
-                logger.info("end send email not attach multiple people file to: {}; subject: {};",() -> Arrays.toString(to),() -> subject);
-            }catch (MessagingException | MailException | UnsupportedEncodingException e){
-                logger.error(ERROR_SEND_EMAIL,() -> e);
+                logger.info("end send email not attach multiple people file to: {}; subject: {};", () -> Arrays.toString(to), () -> subject);
+            } catch (MessagingException | MailException | UnsupportedEncodingException e) {
+                logger.error(ERROR_SEND_EMAIL, () -> e);
             }
         }
     }

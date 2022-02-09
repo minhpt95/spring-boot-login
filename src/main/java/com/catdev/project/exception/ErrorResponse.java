@@ -18,9 +18,9 @@ public class ErrorResponse implements Serializable {
 	private String errorType ;
 	private String messageEN;
 	private String messageVN;
-	private int errorCode;
+	private String errorCode;
 
-	public ErrorResponse(int errorCode,String errorType, String messageEN, String messageVN) {
+	public ErrorResponse(String errorCode,String errorType, String messageEN, String messageVN) {
 		this.errorCode = errorCode;
 		this.errorType = errorType;
 		this.messageEN = messageEN;

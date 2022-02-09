@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -14,22 +15,49 @@ import java.text.SimpleDateFormat;
  */
 public class DateFormatValidator implements ConstraintValidator<DateFormatConstraint, String> {
 
+    private String datePattern;
+    private boolean required;
+
     @Override
     public void initialize(DateFormatConstraint dateFormatConstraint) {
-
+        this.datePattern = dateFormatConstraint.datePattern();
+        this.required = dateFormatConstraint.required();
     }
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext ct) {
-       if(StringUtils.isBlank(s)){
-           return false;
-       }
 
-       SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-       simpleDateFormat.setLenient(true);
+        boolean isDateBlank = StringUtils.isBlank(s);
 
-       return true;
+        if (required) {
+            if (isDateBlank) {
+                return false;
+            }
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+
+            try {
+                simpleDateFormat.parse(s);
+            } catch (ParseException e) {
+                return false;
+            }
+
+        } else {
+
+            if (isDateBlank) {
+                return true;
+            }
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+            try {
+                simpleDateFormat.parse(s);
+            } catch (ParseException e) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
 }

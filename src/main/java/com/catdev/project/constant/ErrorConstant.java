@@ -2,11 +2,12 @@ package com.catdev.project.constant;
 
 public class ErrorConstant {
     public class Code{
-        public static final int LOGIN_INVALID = 1;
-        public static final int USER_INACTIVE = 2;
-        public static final int SUCCESS = 3;
-        public static final int NOT_FOUND = 4;
-        public static final int ALREADY_EXISTS = 5;
+        public static final String SUCCESS = "00";
+        public static final String LOGIN_INVALID = "01";
+        public static final String USER_INACTIVE = "02";
+        public static final String NOT_FOUND = "03";
+        public static final String ALREADY_EXISTS = "04";
+        public static final String PERMISSION_DENIED = "05";
     }
 
     public class Type{

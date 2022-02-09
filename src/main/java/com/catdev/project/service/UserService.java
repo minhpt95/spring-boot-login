@@ -26,7 +26,7 @@ public interface UserService {
     );
     UserDto createUser(CreateUserForm form);
 
-    Boolean confirmEmail(Long id, Instant timeOut);
+    Boolean activateEmail(Long id, Instant timeOut);
 
     Boolean forgotPassword(String email);
 

@@ -12,7 +12,11 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
     @Bean
     public ModelMapper modelMapper(){
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setDeepCopyEnabled(true);
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        return modelMapper;
     }
 
     @Bean
