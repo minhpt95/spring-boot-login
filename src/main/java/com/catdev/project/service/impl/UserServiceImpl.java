@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,7 +143,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setCurrentAddress(form.getCurrentAddress());
-        userEntity.setDescription(form.getDescription());;
+        userEntity.setDescription(form.getDescription());
 
         userEntity.setEmail(form.getEmail());
         userEntity.setIdentityCard(form.getIdentityCard());
@@ -174,7 +175,7 @@ public class UserServiceImpl implements UserService {
             );
         }
         Instant timeCreate = userEntity.getCreatedDate();
-        Instant timeExpired = timeCreate.plusMillis(604800000);
+        Instant timeExpired = timeCreate.plus(7, ChronoUnit.DAYS);
         if (timeExpired.isBefore(currentTime)) {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
@@ -268,8 +269,8 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findUserEntityById(form.getId());
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, "userEntity"),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, "userEntity"),
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, form.getId()),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, form.getId()),
                     ErrorConstant.Type.FAILURE));
         }
         userEntity.setEmail(form.getEmail());
