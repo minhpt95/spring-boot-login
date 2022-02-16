@@ -88,8 +88,7 @@ public class UserServiceImpl implements UserService {
             throw new ProductException(new ErrorResponse(
                     ErrorConstant.Code.LOGIN_INVALID,
                     ErrorConstant.Type.LOGIN_INVALID,
-                    ErrorConstant.Message.LOGIN_INVALID,
-                    ErrorConstant.MessageVI.LOGIN_INVALID
+                    ErrorConstant.Message.LOGIN_INVALID
             ));
         }
         return optionalUserEntity.get();
@@ -135,7 +134,6 @@ public class UserServiceImpl implements UserService {
                     new ErrorResponse(
                             ErrorConstant.Code.ALREADY_EXISTS,
                             ErrorConstant.Type.FAILURE,
-                            String.format(ErrorConstant.Message.ALREADY_EXISTS,form.getEmail()),
                             String.format(ErrorConstant.Message.ALREADY_EXISTS,form.getEmail())
                     )
             );
@@ -170,7 +168,6 @@ public class UserServiceImpl implements UserService {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     String.format(ErrorConstant.Message.NOT_EXISTS, id),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
                     ErrorConstant.Type.FAILURE)
             );
         }
@@ -180,7 +177,6 @@ public class UserServiceImpl implements UserService {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     ErrorConstant.Message.END_OF_TIME,
-                    ErrorConstant.MessageVI.END_OF_TIME,
                     ErrorConstant.Type.FAILURE)
             );
         }
@@ -199,7 +195,6 @@ public class UserServiceImpl implements UserService {
 
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     String.format(ErrorConstant.Message.NOT_EXISTS, email),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, email),
                     ErrorConstant.Type.FAILURE));
         }
 
@@ -240,7 +235,6 @@ public class UserServiceImpl implements UserService {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     String.format(ErrorConstant.Message.NOT_EXISTS, changePasswordReq.getId()),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, changePasswordReq.getId()),
                     ErrorConstant.Type.FAILURE)
             );
         }
@@ -256,7 +250,6 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     String.format(ErrorConstant.Message.NOT_EXISTS, changeStatusAccountReq.getId()),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, changeStatusAccountReq.getId()),
                     ErrorConstant.Type.FAILURE));
         }
         userEntity.setEnabled(changeStatusAccountReq.isStatus());
@@ -270,7 +263,6 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
                     String.format(ErrorConstant.Message.NOT_EXISTS, form.getId()),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, form.getId()),
                     ErrorConstant.Type.FAILURE));
         }
         userEntity.setEmail(form.getEmail());

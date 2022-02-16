@@ -10,8 +10,8 @@ public class ResponseDto<T> extends ErrorResponse {
     private T content;
     private Long remainTime;
 
-    public ResponseDto(String errorCode, String errorType, String messageEN, String messageVN, T content) {
-        super(errorCode, errorType, messageEN, messageVN);
+    public ResponseDto(String errorCode, String errorType, String message, T content) {
+        super(errorCode, errorType, message);
         this.content = content;
     }
 

@@ -36,8 +36,7 @@ public class ResponseHandler {
     public ErrorResponse handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.SUCCESS);
-        errorResponse.setMessageVN("Bạn không đủ quyền để truy cập vào đây");
-        errorResponse.setMessageEN("");
+        errorResponse.setMessage("You do not have permission to access");
         return errorResponse;
     }
 
@@ -48,8 +47,7 @@ public class ResponseHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.USER_INACTIVE);
         errorResponse.setErrorType(ErrorConstant.Type.USER_INACTIVE);
-        errorResponse.setMessageEN(ErrorConstant.Message.USER_INACTIVE);
-        errorResponse.setMessageVN(ErrorConstant.MessageVI.USER_INACTIVE);
+        errorResponse.setMessage(ErrorConstant.Message.USER_INACTIVE);
         return errorResponse;
     }
 
@@ -58,7 +56,7 @@ public class ResponseHandler {
     public ErrorResponse handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.SUCCESS);
-        errorResponse.setMessageEN(ex.getMessage());
+        errorResponse.setMessage(ex.getMessage());
         return errorResponse;
     }
 
@@ -77,7 +75,7 @@ public class ResponseHandler {
             return errorBindingDto;
         }).collect(Collectors.toList());
 
-        errorResponse.setMessageEN(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorBindingDtos));
+        errorResponse.setMessage(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorBindingDtos));
 
         return errorResponse;
     }
@@ -87,7 +85,7 @@ public class ResponseHandler {
     public ErrorResponse handleBindingErrors(HttpMessageNotReadableException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.SUCCESS);
-        errorResponse.setMessageEN(ex.getMessage());
+        errorResponse.setMessage(ex.getMessage());
         return errorResponse;
     }
 }
