@@ -1,7 +1,7 @@
 package com.catdev.project.constant;
 
 public class ErrorConstant {
-    public class Code{
+    public static class Code {
         public static final String SUCCESS = "00";
         public static final String LOGIN_INVALID = "01";
         public static final String USER_INACTIVE = "02";
@@ -10,14 +10,14 @@ public class ErrorConstant {
         public static final String PERMISSION_DENIED = "05";
     }
 
-    public class Type{
+    public static class Type {
         public static final String LOGIN_INVALID = "LOGIN_INVALID";
         public static final String USER_INACTIVE = "USER_INACTIVE";
         public static final String SUCCESS = "SUCCESS";
         public static final String FAILURE = "FAILURE";
     }
 
-    public class Message {
+    public static class Message {
         public static final String LOGIN_INVALID = "Username or password invalid.";
         public static final String USER_INACTIVE = "User inactive.";
         public static final String SUCCESS = "SUCCESS.";
