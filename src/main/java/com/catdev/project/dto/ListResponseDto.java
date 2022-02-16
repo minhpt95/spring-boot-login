@@ -14,7 +14,7 @@ public class ListResponseDto<T> implements Serializable {
     private Boolean hasNextPage;
     private Boolean hasPreviousPage;
     private int pageCount;
-    private int totalItemCount;
+    private long totalItemCount;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -68,11 +68,11 @@ public class ListResponseDto<T> implements Serializable {
         this.pageCount = pageCount;
     }
 
-    public int getTotalItemCount() {
+    public long getTotalItemCount() {
         return totalItemCount;
     }
 
-    public void setTotalItemCount(int totalItemCount) {
+    public void setTotalItemCount(long totalItemCount) {
         this.totalItemCount = totalItemCount;
     }
 
@@ -84,7 +84,7 @@ public class ListResponseDto<T> implements Serializable {
         result.setHasNextPage(pageIndex < page.getTotalPages() - 1);
         result.setHasPreviousPage(pageIndex > 0);
         result.setPageCount(page.getTotalPages());
-        result.setTotalItemCount((int) page.getTotalElements());
+        result.setTotalItemCount(page.getTotalElements());
         return result;
     }
 
