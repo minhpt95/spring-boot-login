@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
             throw new ProductException(new ErrorResponse(
                     ErrorConstant.Code.LOGIN_INVALID,
                     ErrorConstant.Type.LOGIN_INVALID,
-                    ErrorConstant.MessageEN.LOGIN_INVALID,
+                    ErrorConstant.Message.LOGIN_INVALID,
                     ErrorConstant.MessageVI.LOGIN_INVALID
             ));
         }
@@ -135,8 +135,8 @@ public class UserServiceImpl implements UserService {
                     new ErrorResponse(
                             ErrorConstant.Code.ALREADY_EXISTS,
                             ErrorConstant.Type.FAILURE,
-                            String.format(ErrorConstant.MessageEN.ALREADY_EXISTS,form.getEmail()),
-                            String.format(ErrorConstant.MessageEN.ALREADY_EXISTS,form.getEmail())
+                            String.format(ErrorConstant.Message.ALREADY_EXISTS,form.getEmail()),
+                            String.format(ErrorConstant.Message.ALREADY_EXISTS,form.getEmail())
                     )
             );
         }
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
+                    String.format(ErrorConstant.Message.NOT_EXISTS, id),
                     String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
                     ErrorConstant.Type.FAILURE)
             );
@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
         if (timeExpired.isBefore(currentTime)) {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    ErrorConstant.MessageEN.END_OF_TIME,
+                    ErrorConstant.Message.END_OF_TIME,
                     ErrorConstant.MessageVI.END_OF_TIME,
                     ErrorConstant.Type.FAILURE)
             );
@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
             log.error("User with email not found in database => {}",() -> email);
 
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, email),
+                    String.format(ErrorConstant.Message.NOT_EXISTS, email),
                     String.format(ErrorConstant.MessageVI.NOT_EXISTS, email),
                     ErrorConstant.Type.FAILURE));
         }
@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, changePasswordReq.getId()),
+                    String.format(ErrorConstant.Message.NOT_EXISTS, changePasswordReq.getId()),
                     String.format(ErrorConstant.MessageVI.NOT_EXISTS, changePasswordReq.getId()),
                     ErrorConstant.Type.FAILURE)
             );
@@ -255,7 +255,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findUserEntityById(changeStatusAccountReq.getId());
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, changeStatusAccountReq.getId()),
+                    String.format(ErrorConstant.Message.NOT_EXISTS, changeStatusAccountReq.getId()),
                     String.format(ErrorConstant.MessageVI.NOT_EXISTS, changeStatusAccountReq.getId()),
                     ErrorConstant.Type.FAILURE));
         }
@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findUserEntityById(form.getId());
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, form.getId()),
+                    String.format(ErrorConstant.Message.NOT_EXISTS, form.getId()),
                     String.format(ErrorConstant.MessageVI.NOT_EXISTS, form.getId()),
                     ErrorConstant.Type.FAILURE));
         }

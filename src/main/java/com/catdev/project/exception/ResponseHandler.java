@@ -48,7 +48,7 @@ public class ResponseHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.USER_INACTIVE);
         errorResponse.setErrorType(ErrorConstant.Type.USER_INACTIVE);
-        errorResponse.setMessageEN(ErrorConstant.MessageEN.USER_INACTIVE);
+        errorResponse.setMessageEN(ErrorConstant.Message.USER_INACTIVE);
         errorResponse.setMessageVN(ErrorConstant.MessageVI.USER_INACTIVE);
         return errorResponse;
     }

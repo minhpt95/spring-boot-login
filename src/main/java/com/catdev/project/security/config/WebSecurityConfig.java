@@ -77,7 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(
                 "/api/auth/register",
                 "/api/auth/login",
-                "/api/auth/forgotPassword"
+                "/api/auth/forgotPassword",
+                "/api/user/activateEmail/**"
         ).permitAll();
 
         http.authorizeRequests().anyRequest().authenticated()

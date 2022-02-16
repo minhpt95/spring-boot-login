@@ -18,15 +18,11 @@ import com.catdev.project.security.service.UserPrinciple;
 import com.catdev.project.service.MailService;
 import com.catdev.project.service.RefreshTokenService;
 import com.catdev.project.service.UserService;
-import com.catdev.project.util.EmailValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,8 +37,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
-
-import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -81,7 +75,7 @@ public class AuthRestController {
         responseDto.setContent(createUserDto);
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         return ResponseEntity.ok().body(responseDto);
     }
 
@@ -96,8 +90,7 @@ public class AuthRestController {
            throw new ProductException(new ErrorResponse(
                    ErrorConstant.Code.LOGIN_INVALID,
                    ErrorConstant.Type.LOGIN_INVALID,
-                   ErrorConstant.MessageEN.LOGIN_INVALID,
-                   ErrorConstant.MessageVI.LOGIN_INVALID
+                   ErrorConstant.Message.LOGIN_INVALID
            ));
         }
 
@@ -122,8 +115,8 @@ public class AuthRestController {
 
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
+
         responseDto.setContent(
                 new JwtResponse(
                         jwt,
@@ -154,7 +147,7 @@ public class AuthRestController {
 
         ResponseDto<?> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);
-        responseDto.setMessageEN(ErrorConstant.Code.SUCCESS);
+        responseDto.setMessage(ErrorConstant.Code.SUCCESS);
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         return responseDto;
     }
@@ -172,7 +165,7 @@ public class AuthRestController {
                     Long timeRemain = jwtProvider.getRemainTimeFromJwtToken(token);
                     ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
                     responseDto.setRemainTime(timeRemain);
-                    responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+                    responseDto.setMessage(ErrorConstant.Message.SUCCESS);
                     responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
                     responseDto.setContent(new TokenRefreshResponse(token, requestRefreshToken));
                     return responseDto;
@@ -201,7 +194,7 @@ public class AuthRestController {
 
         ResponseDto<TokenRefreshResponse> responseDto = new ResponseDto<>();
         responseDto.setRemainTime(0L);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         return responseDto;
 

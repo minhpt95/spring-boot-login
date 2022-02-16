@@ -3,35 +3,19 @@ package com.catdev.project.controller;
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
 import com.catdev.project.dto.UserDto;
-import com.catdev.project.entity.RefreshTokenEntity;
-import com.catdev.project.entity.UserEntity;
-import com.catdev.project.exception.ErrorResponse;
-import com.catdev.project.exception.ProductException;
-import com.catdev.project.exception.TokenRefreshException;
 import com.catdev.project.jwt.JwtProvider;
-import com.catdev.project.jwt.payload.request.TokenRefreshRequest;
-import com.catdev.project.jwt.payload.response.TokenRefreshResponse;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.readable.request.ChangePasswordReq;
 import com.catdev.project.readable.request.ChangeStatusAccountReq;
-import com.catdev.project.security.service.UserPrinciple;
 import com.catdev.project.service.RefreshTokenService;
 import com.catdev.project.service.UserService;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.Instant;
 
@@ -64,8 +48,8 @@ public class UserController {
 
         responseDto.setContent(userService.activateEmail(id,instant));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
     }
@@ -75,8 +59,7 @@ public class UserController {
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
         responseDto.setContent(userService.changePassword(changePasswordReq));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
     }
@@ -86,8 +69,8 @@ public class UserController {
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
         responseDto.setContent(userService.changeStatus(changeStatusAccountReq));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
     }
@@ -99,8 +82,8 @@ public class UserController {
         ResponseDto<UserDto> responseDto = new ResponseDto<>();
         responseDto.setContent(userService.updateUser(form));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
-        responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
+
+        responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
     }
