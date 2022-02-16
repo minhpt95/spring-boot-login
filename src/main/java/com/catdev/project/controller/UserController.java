@@ -4,14 +4,16 @@ import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
 import com.catdev.project.dto.UserDto;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
+import com.catdev.project.readable.request.ChangePasswordReq;
+import com.catdev.project.readable.request.ChangeStatusAccountReq;
 import com.catdev.project.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.Instant;
 
 @RestController
@@ -38,10 +40,10 @@ public class UserController {
         return responseDto;
     }
 
-    @PutMapping(value = "/changePassword/{id}")
-    public  ResponseDto<Boolean> changePassword(@PathVariable Long id){
+    @PutMapping(value = "/changePassword")
+    public  ResponseDto<Boolean> changePassword(@Valid @RequestBody ChangePasswordReq changePasswordReq){
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
-        responseDto.setContent(userService.changePassword(id));
+        responseDto.setContent(userService.changePassword(changePasswordReq));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
         responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);
@@ -49,10 +51,10 @@ public class UserController {
         return responseDto;
     }
 
-    @PutMapping(value = "/changeStatus/{id}")
-    public  ResponseDto<Boolean> changeStatus(@PathVariable Long id ,Boolean status){
+    @PutMapping(value = "/changeStatus")
+    public  ResponseDto<Boolean> changeStatus(@Valid @RequestBody ChangeStatusAccountReq changeStatusAccountReq){
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
-        responseDto.setContent(userService.changeStatus(id,status));
+        responseDto.setContent(userService.changeStatus(changeStatusAccountReq));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setMessageVN(ErrorConstant.MessageVI.SUCCESS);
         responseDto.setMessageEN(ErrorConstant.MessageEN.SUCCESS);

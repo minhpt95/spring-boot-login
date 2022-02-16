@@ -7,6 +7,8 @@ import com.catdev.project.dto.UserDto;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
+import com.catdev.project.readable.request.ChangePasswordReq;
+import com.catdev.project.readable.request.ChangeStatusAccountReq;
 
 import java.time.Instant;
 
@@ -30,9 +32,9 @@ public interface UserService {
 
     Boolean forgotPassword(String email);
 
-    Boolean changePassword(Long id);
+    Boolean changePassword(ChangePasswordReq changePasswordReq);
 
-    Boolean changeStatus(Long id,Boolean status);
+    Boolean changeStatus(ChangeStatusAccountReq changeStatusAccountReq);
 
     UserDto updateUser(UpdateUserForm form);
 }

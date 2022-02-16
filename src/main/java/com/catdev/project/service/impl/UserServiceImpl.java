@@ -9,6 +9,8 @@ import com.catdev.project.exception.ErrorResponse;
 import com.catdev.project.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
+import com.catdev.project.readable.request.ChangePasswordReq;
+import com.catdev.project.readable.request.ChangeStatusAccountReq;
 import com.catdev.project.respository.UserRepository;
 import com.catdev.project.service.MailService;
 import com.catdev.project.service.UserService;
@@ -18,10 +20,8 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -234,32 +234,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean changePassword(Long id) {
-        UserEntity userEntity = userRepository.findUserEntityById(id);
+    public Boolean changePassword(ChangePasswordReq changePasswordReq) {
+        UserEntity userEntity = userRepository.findUserEntityById(changePasswordReq.getId());
         if (userEntity == null) {
             throw new ProductException(
                     new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, changePasswordReq.getId()),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, changePasswordReq.getId()),
                     ErrorConstant.Type.FAILURE)
             );
         }
-        String pwd = RandomStringUtils.random(12, CommonConstant.characters);
+        String pwd = changePasswordReq.getPassword();
         userEntity.setPassword(passwordEncoder.encode(pwd));
         userRepository.save(userEntity);
         return true;
     }
 
     @Override
-    public Boolean changeStatus(Long id, Boolean status) {
-        UserEntity userEntity = userRepository.findUserEntityById(id);
+    public Boolean changeStatus(ChangeStatusAccountReq changeStatusAccountReq) {
+        UserEntity userEntity = userRepository.findUserEntityById(changeStatusAccountReq.getId());
         if (userEntity == null) {
             throw new ProductException(new ErrorResponse(ErrorConstant.Code.NOT_FOUND,
-                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, id),
-                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, id),
+                    String.format(ErrorConstant.MessageEN.NOT_EXISTS, changeStatusAccountReq.getId()),
+                    String.format(ErrorConstant.MessageVI.NOT_EXISTS, changeStatusAccountReq.getId()),
                     ErrorConstant.Type.FAILURE));
         }
-        userEntity.setEnabled(status);
+        userEntity.setEnabled(changeStatusAccountReq.isStatus());
         userRepository.save(userEntity);
         return true;
     }
