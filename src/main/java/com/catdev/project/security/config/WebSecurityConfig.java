@@ -3,6 +3,8 @@ package com.catdev.project.security.config;
 import com.catdev.project.jwt.JwtAuthEntryPoint;
 import com.catdev.project.jwt.JwtAuthTokenFilter;
 import com.catdev.project.security.service.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,17 +20,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
+@Log4j2
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private JwtAuthEntryPoint unauthorizedHandler;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    private final JwtAuthEntryPoint unauthorizedHandler;
+
 
     @Bean
     public JwtAuthTokenFilter authenticationJwtTokenFilter() {
@@ -55,7 +61,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/**");
+        web.ignoring().antMatchers(
+                "/swagger-ui/**",
+                "/swagger-resources/**",
+                "/v2/**"
+        );
     }
 
     @Override
@@ -64,9 +74,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.cors().and().csrf().disable();
 
-        http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
+        http.authorizeRequests().antMatchers(
+                "/api/auth/register",
+                "/api/auth/login",
+                "/api/auth/forgotPassword"
+        ).permitAll();
 
-        http.authorizeRequests().anyRequest().permitAll()
+        http.authorizeRequests().anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

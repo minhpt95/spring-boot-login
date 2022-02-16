@@ -51,13 +51,26 @@ import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
 @RequestMapping("/api/auth")
 public class AuthRestController {
 
-    final RefreshTokenService refreshTokenService;
-    final AuthenticationManager authenticationManager;
-    final MailService mailService;
-    final UserService userService;
-    final PasswordEncoder encoder;
-    final JwtProvider jwtProvider;
-    final ModelMapper modelMapper;
+    final
+    AuthenticationManager authenticationManager;
+
+    final
+    MailService mailService;
+
+    final
+    UserService userService;
+
+    final
+    PasswordEncoder encoder;
+
+    final
+    JwtProvider jwtProvider;
+
+    final
+    ModelMapper modelMapper;
+
+    final
+    RefreshTokenService refreshTokenService;
 
 
     @PostMapping("/register")
@@ -126,6 +139,26 @@ public class AuthRestController {
         return responseDto;
     }
 
+    @SneakyThrows
+    @PostMapping("/forgotPassword")
+    public ResponseDto<?> forgotPassword(@RequestParam(name = "email",defaultValue = "") String email) {
+
+        if (StringUtils.isBlank(email)) {
+            log.error("parameter email empty => {}",() -> email);
+            throw new ProductException(
+                    new ErrorResponse()
+            );
+        }
+
+        userService.forgotPassword(email);
+
+        ResponseDto<?> responseDto = new ResponseDto<>();
+        responseDto.setRemainTime(0L);
+        responseDto.setMessageEN(ErrorConstant.Code.SUCCESS);
+        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
+        return responseDto;
+    }
+
     @PostMapping("/refreshToken")
     public ResponseDto<?> refreshToken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
@@ -147,6 +180,8 @@ public class AuthRestController {
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
     }
+
+
 
     @PostMapping("/logout")
     public ResponseDto<?> logout(HttpServletRequest request, HttpServletResponse response) {
@@ -170,25 +205,5 @@ public class AuthRestController {
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         return responseDto;
 
-    }
-
-    @SneakyThrows
-    @PostMapping("/forgot")
-    public ResponseDto<?> forgotPassword(@RequestParam(name = "email",defaultValue = "") String email) {
-
-        if (StringUtils.isBlank(email)) {
-            log.error("parameter email empty => {}",() -> email);
-            throw new ProductException(
-                    new ErrorResponse()
-            );
-        }
-
-        userService.forgotPassword(email);
-
-        ResponseDto<?> responseDto = new ResponseDto<>();
-        responseDto.setRemainTime(0L);
-        responseDto.setMessageEN(ErrorConstant.Code.SUCCESS);
-        responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-        return responseDto;
     }
 }
