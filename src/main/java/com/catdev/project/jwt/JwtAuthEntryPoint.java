@@ -1,5 +1,6 @@
 package com.catdev.project.jwt;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.AuthenticationException;
@@ -11,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Log4j2
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
-
-    private static final Logger logger = LogManager.getLogger(JwtAuthEntryPoint.class);
 
     @Override
     public void commence(HttpServletRequest request,
@@ -21,7 +21,7 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException e)
             throws IOException {
 
-        logger.error("Unauthorized error. Message - {}", e.getMessage());
+        log.error("Unauthorized error. Message - {}", e.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error -> Unauthorized");
     }
 }
