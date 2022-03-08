@@ -11,7 +11,7 @@ import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.readable.request.ChangePasswordReq;
 import com.catdev.project.readable.request.ChangeStatusAccountReq;
-import com.catdev.project.respository.UserRepository;
+import com.catdev.project.entity.respository.UserRepository;
 import com.catdev.project.service.MailService;
 import com.catdev.project.service.UserService;
 import com.catdev.project.util.CommonUtil;

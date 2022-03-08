@@ -1,4 +1,4 @@
-package com.catdev.project.respository;
+package com.catdev.project.entity.respository;
 
 import com.catdev.project.entity.UserEntity;
 import org.springframework.data.domain.Page;
