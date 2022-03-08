@@ -1,5 +1,7 @@
 package com.catdev.project.util;
 
+import lombok.extern.log4j.Log4j2;
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+@Log4j2
 public class EmailValidateUtil {
     public static boolean isAddressValid(String address) {
         // Find the separator for the domain name
@@ -43,12 +46,14 @@ public class EmailValidateUtil {
             boolean valid = false;
             try (Socket skt = new Socket((String) o, 25)) {
                 int res;
+
                 BufferedReader rdr = new BufferedReader
                         (new InputStreamReader(skt.getInputStream()));
                 BufferedWriter wtr = new BufferedWriter
                         (new OutputStreamWriter(skt.getOutputStream()));
 
                 res = hear(rdr);
+
                 if (res != 220) throw new Exception("Invalid header");
                 say(wtr, "EHLO rgagnon.com");
 
@@ -68,6 +73,7 @@ public class EmailValidateUtil {
                 hear(rdr);
                 say(wtr, "QUIT");
                 hear(rdr);
+
                 if (res != 250)
                     throw new Exception("Address is not valid!");
 
@@ -75,7 +81,7 @@ public class EmailValidateUtil {
                 rdr.close();
                 wtr.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                log.error("Exception when checking email",ex);
             } finally {
                 return valid;
             }

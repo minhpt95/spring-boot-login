@@ -48,7 +48,6 @@ public class UserController {
 
         responseDto.setContent(userService.activateEmail(id,instant));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-
         responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
@@ -69,7 +68,6 @@ public class UserController {
         ResponseDto<Boolean> responseDto = new ResponseDto<>();
         responseDto.setContent(userService.changeStatus(changeStatusAccountReq));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-
         responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;
@@ -82,7 +80,6 @@ public class UserController {
         ResponseDto<UserDto> responseDto = new ResponseDto<>();
         responseDto.setContent(userService.updateUser(form));
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
-
         responseDto.setMessage(ErrorConstant.Message.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);
         return responseDto;

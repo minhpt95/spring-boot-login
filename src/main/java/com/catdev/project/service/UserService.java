@@ -23,8 +23,9 @@ public interface UserService {
 
     UserEntity findUserEntityByEmail(String email);
 
-    ListResponseDto<UserDto> getUserList(int pageIndex,
-                                         int pageSize
+    ListResponseDto<UserDto> getUserList(
+            int pageIndex,
+            int pageSize
     );
     UserDto createUser(CreateUserForm form);
 

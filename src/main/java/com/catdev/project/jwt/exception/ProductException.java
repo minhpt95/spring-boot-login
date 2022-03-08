@@ -1,4 +1,4 @@
-package com.catdev.project.exception;
+package com.catdev.project.jwt.exception;
 
 public class ProductException extends RuntimeException {
     private ErrorResponse errorResponse;

@@ -5,8 +5,8 @@ import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ListResponseDto;
 import com.catdev.project.dto.UserDto;
 import com.catdev.project.entity.UserEntity;
-import com.catdev.project.exception.ErrorResponse;
-import com.catdev.project.exception.ProductException;
+import com.catdev.project.jwt.exception.ErrorResponse;
+import com.catdev.project.jwt.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.readable.request.ChangePasswordReq;
@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
                     ErrorConstant.Type.FAILURE));
         }
 
-        String pwd = RandomStringUtils.random(12, CommonConstant.characters);
+        String pwd = RandomStringUtils.random(12, CommonConstant.CHARACTERS);
 
         log.info("start forgotPassword()");
 

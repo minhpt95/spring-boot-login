@@ -1,4 +1,4 @@
-package com.catdev.project.exception;
+package com.catdev.project.jwt.exception;
 
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ErrorBindingDto;
@@ -82,6 +82,7 @@ public class ResponseHandler {
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+
     public ErrorResponse handleBindingErrors(HttpMessageNotReadableException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(ErrorConstant.Code.SUCCESS);
