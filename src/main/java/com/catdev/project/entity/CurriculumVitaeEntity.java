@@ -30,6 +30,9 @@ public class CurriculumVitaeEntity {
     private String candidateComment;
 
     @Column
+    private String candidatePosition;
+
+    @Column
     private String candidateFilePath;
 
     @Column
