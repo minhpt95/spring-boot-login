@@ -31,4 +31,10 @@ public class CurriculumVitaeEntity {
 
     @Column
     private String candidateFilePath;
+
+    @Column
+    private String candidateFileType;
+
+    @Column
+    private String candidateFileName;
 }

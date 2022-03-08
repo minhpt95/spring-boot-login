@@ -33,6 +33,10 @@ public class CurriculumVitaeServiceImpl implements CurriculumVitaeService {
                 .getExtension(createCVReq.getResumeFile().getOriginalFilename())
                 .toLowerCase(Locale.ROOT);
 
+
+        StringBuilder newFileNameStringBuilder = new StringBuilder(CommonConstant.CURRICULUM_VITAE).append("_");
+        newFileNameStringBuilder.append(createCVReq.getYourName().replaceAll("\\s+","_"));
+
         StringBuilder pathFileStringBuilder = new StringBuilder(env.getProperty("aws.s3.path.upload.cv"))
                 .append(programLanguage.toLowerCase(Locale.ROOT)).append("/")
                 .append(extensionFile).append("/")
@@ -43,8 +47,10 @@ public class CurriculumVitaeServiceImpl implements CurriculumVitaeService {
         CurriculumVitaeEntity curriculumVitaeEntity = new CurriculumVitaeEntity();
         curriculumVitaeEntity.setCandidateComment(createCVReq.getYourComment());
         curriculumVitaeEntity.setCandidateEmail(createCVReq.getYourEmail());
-//        curriculumVitaeEntity.setCandidateCVFilePath(pathFile);
-        curriculumVitaeEntity.setCandidateName(createCVReq.getYourName());
+        curriculumVitaeEntity.setCandidateFilePath(pathFile);
+        curriculumVitaeEntity.setCandidateName(createCVReq.getYourName().replaceAll("\\s+"," "));
+        curriculumVitaeEntity.setCandidateFileType(extensionFile);
+        curriculumVitaeEntity.setCandidateFileName(newFileNameStringBuilder.toString());
         curriculumVitaeRepository.save(curriculumVitaeEntity);
 
         CreateCVRes createCVRes = new CreateCVRes();
