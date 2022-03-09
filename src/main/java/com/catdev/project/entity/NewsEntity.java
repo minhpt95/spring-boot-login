@@ -1,12 +1,14 @@
 package com.catdev.project.entity;
 
+import com.catdev.project.entity.common.CommonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Polymorphism;
+import org.hibernate.annotations.PolymorphismType;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity
 @Table(name = "news")
@@ -14,29 +16,13 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
-
+@Polymorphism(type = PolymorphismType.EXPLICIT)
+public class NewsEntity extends CommonEntity {
     @Column
     private String title;
 
     @Column
     private String content;
-
-    @Column
-    private Instant createdTime;
-
-    @Column
-    private Instant modifiedTime;
-
-    @Column
-    private Long createdBy;
-
-    @Column
-    private Long modifiedBy;
 
     @Column
     private boolean active;

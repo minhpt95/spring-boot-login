@@ -1,5 +1,6 @@
 package com.catdev.project.entity;
 
+import com.catdev.project.entity.common.CommonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
-
+public class EmployeeEntity extends CommonEntity {
     @Column
     private String name;
 

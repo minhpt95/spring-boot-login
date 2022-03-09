@@ -7,20 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
-@Table(name = "program_language")
+@Table(name = "topic")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProgramLanguageEntity extends CommonEntity {
+public class TopicEntity extends CommonEntity {
     @Column
-    private String programLanguageName;
-
-    @Column(unique = true)
-    private String programLanguageCode;
+    private String topicName;
 
     @Column
-    private boolean available;
+    private String topicCode;
+
+    @Column
+    private boolean active;
 }

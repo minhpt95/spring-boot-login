@@ -4,7 +4,7 @@ import com.catdev.project.constant.CommonConstant;
 import com.catdev.project.entity.CurriculumVitaeEntity;
 import com.catdev.project.readable.request.CreateCVReq;
 import com.catdev.project.readable.response.CreateCVRes;
-import com.catdev.project.entity.respository.CurriculumVitaeRepository;
+import com.catdev.project.respository.CurriculumVitaeRepository;
 import com.catdev.project.service.CurriculumVitaeService;
 import com.catdev.project.service.S3Service;
 import lombok.AllArgsConstructor;

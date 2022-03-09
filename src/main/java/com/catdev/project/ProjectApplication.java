@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
@@ -23,6 +24,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 @SpringBootApplication
+@EntityScan(basePackages = {"com.catdev.project"})
 @EnableSwagger2
 @EnableScheduling
 @EnableAsync

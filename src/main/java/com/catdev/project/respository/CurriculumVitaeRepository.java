@@ -1,4 +1,4 @@
-package com.catdev.project.entity.respository;
+package com.catdev.project.respository;
 
 import com.catdev.project.entity.CurriculumVitaeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

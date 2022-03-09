@@ -5,13 +5,14 @@ import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ListResponseDto;
 import com.catdev.project.dto.UserDto;
 import com.catdev.project.entity.UserEntity;
+import com.catdev.project.entity.common.CommonEntity;
 import com.catdev.project.jwt.exception.ErrorResponse;
 import com.catdev.project.jwt.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.readable.request.ChangePasswordReq;
 import com.catdev.project.readable.request.ChangeStatusAccountReq;
-import com.catdev.project.entity.respository.UserRepository;
+import com.catdev.project.respository.UserRepository;
 import com.catdev.project.service.MailService;
 import com.catdev.project.service.UserService;
 import com.catdev.project.util.CommonUtil;
@@ -152,7 +153,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPhoneNumber1(form.getPhoneNumber1());
         userEntity.setPhoneNumber2(form.getPhoneNumber2());
 
-        userEntity.setCreatedDate(Instant.now());
+        userEntity.setCreatedTime(Instant.now());
 
         userEntity = userRepository.save(userEntity);
 
@@ -171,7 +172,7 @@ public class UserServiceImpl implements UserService {
                     ErrorConstant.Type.FAILURE)
             );
         }
-        Instant timeCreate = userEntity.getCreatedDate();
+        Instant timeCreate = userEntity.getCreatedTime();
         Instant timeExpired = timeCreate.plus(7, ChronoUnit.DAYS);
         if (timeExpired.isBefore(currentTime)) {
             throw new ProductException(

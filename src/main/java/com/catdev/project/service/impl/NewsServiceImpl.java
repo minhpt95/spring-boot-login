@@ -1,7 +1,7 @@
 package com.catdev.project.service.impl;
 
-import com.catdev.project.entity.respository.EmployeeRepository;
-import com.catdev.project.entity.respository.NewsRepository;
+import com.catdev.project.respository.EmployeeRepository;
+import com.catdev.project.respository.NewsRepository;
 import com.catdev.project.service.NewsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

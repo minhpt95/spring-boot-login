@@ -1,6 +1,6 @@
 package com.catdev.project.jwt;
 
-import com.catdev.project.entity.respository.UserRepository;
+import com.catdev.project.respository.UserRepository;
 import com.catdev.project.security.service.UserDetailsServiceImpl;
 import com.catdev.project.security.service.UserPrinciple;
 import lombok.extern.log4j.Log4j2;

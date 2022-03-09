@@ -1,5 +1,6 @@
 package com.catdev.project.entity;
 
+import com.catdev.project.entity.common.CommonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,22 +18,17 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
-
+public class UserEntity extends CommonEntity {
     @Column
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String email;
 
     @Column
     private String password;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String identityCard;
 
     @Column
@@ -58,18 +54,6 @@ public class UserEntity {
 
     @Column
     private boolean isEnabled;
-
-    @Column
-    private Instant createdDate;
-
-    @Column
-    private Long createdBy;
-
-    @Column
-    private Instant modifiedDate;
-
-    @Column
-    private Long modifiedBy;
 
     @Column
     private String transactionPassword;

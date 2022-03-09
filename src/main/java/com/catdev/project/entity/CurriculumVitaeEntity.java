@@ -1,5 +1,6 @@
 package com.catdev.project.entity;
 
+import com.catdev.project.entity.common.CommonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,7 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CurriculumVitaeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+public class CurriculumVitaeEntity extends CommonEntity {
 
     @Column
     private String candidateName;

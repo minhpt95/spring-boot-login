@@ -1,11 +1,11 @@
-package com.catdev.project.readable.response;
+package com.catdev.project.readable.response.employee;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EmployeePageable {
+public class EmployeePageableRes {
     private String name;
     private String email;
     private String imageUrl;
