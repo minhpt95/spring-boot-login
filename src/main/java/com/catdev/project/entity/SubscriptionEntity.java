@@ -6,21 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "news")
+@Table(name = "subscriptions")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsEntity extends CommonEntity {
+public class SubscriptionEntity extends CommonEntity {
     @Column
-    private String title;
+    private String firstName;
 
     @Column
-    private String content;
+    private String lastName;
 
     @Column
-    private boolean active;
+    private String email;
 }

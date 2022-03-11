@@ -19,14 +19,14 @@ public class CommonEntity {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private Instant createdTime;
+
+    @Column(nullable = false)
+    private Long createdBy;
 
     @Column
     private Instant modifiedTime;
-
-    @Column
-    private Long createdBy;
 
     @Column
     private Long modifiedBy;

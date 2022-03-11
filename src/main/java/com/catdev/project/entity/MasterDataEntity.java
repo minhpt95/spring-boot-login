@@ -6,21 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "news")
+@Table(name = "master_data")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsEntity extends CommonEntity {
-    @Column
-    private String title;
+public class MasterDataEntity extends CommonEntity {
 
     @Column
-    private String content;
+    private String type;
+
+    @Column
+    private String code;
+
+    @Column
+    private String name;
 
     @Column
     private boolean active;
+
 }

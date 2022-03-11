@@ -2,10 +2,12 @@ package com.catdev.project.dto;
 
 import org.springframework.data.domain.Page;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class ListResponseDto<T> implements Serializable {
+    @Serial
     private static final long serialVersionUID = -3931471505590865499L;
 
     private int pageSize;
@@ -76,13 +78,13 @@ public class ListResponseDto<T> implements Serializable {
         this.totalItemCount = totalItemCount;
     }
 
-    public ListResponseDto<T> buildResponseList(Page<T> page, int pageIndex, int pageSize, List<T> list) {
+    public ListResponseDto<T> buildResponseList(Page<T> page, int pageIndex, int pageSize) {
         ListResponseDto<T> result = new ListResponseDto<T>();
         result.setPageSize(pageSize);
-        result.setItems(list);
+        result.setItems(page.getContent());
         result.setPageIndex(pageIndex);
-        result.setHasNextPage(pageIndex < page.getTotalPages() - 1);
-        result.setHasPreviousPage(pageIndex > 0);
+        result.setHasNextPage(page.hasNext());
+        result.setHasPreviousPage(page.hasPrevious());
         result.setPageCount(page.getTotalPages());
         result.setTotalItemCount(page.getTotalElements());
         return result;

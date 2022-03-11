@@ -2,7 +2,7 @@ package com.catdev.project.controller;
 
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
-import com.catdev.project.dto.UserDto;
+import com.catdev.project.dto.User.UserDto;
 import com.catdev.project.entity.RefreshTokenEntity;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.jwt.exception.ErrorResponse;

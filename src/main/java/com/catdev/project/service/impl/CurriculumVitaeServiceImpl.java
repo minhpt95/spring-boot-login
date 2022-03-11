@@ -3,6 +3,7 @@ package com.catdev.project.service.impl;
 import com.catdev.project.constant.CommonConstant;
 import com.catdev.project.entity.CurriculumVitaeEntity;
 import com.catdev.project.readable.request.CreateCVReq;
+import com.catdev.project.readable.request.news.CreateRequestHireDeveloperReq;
 import com.catdev.project.readable.response.CreateCVRes;
 import com.catdev.project.respository.CurriculumVitaeRepository;
 import com.catdev.project.service.CurriculumVitaeService;
@@ -59,4 +60,5 @@ public class CurriculumVitaeServiceImpl implements CurriculumVitaeService {
 
         return createCVRes;
     }
+
 }

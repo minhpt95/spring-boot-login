@@ -3,9 +3,8 @@ package com.catdev.project.service.impl;
 import com.catdev.project.constant.CommonConstant;
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ListResponseDto;
-import com.catdev.project.dto.UserDto;
+import com.catdev.project.dto.User.UserDto;
 import com.catdev.project.entity.UserEntity;
-import com.catdev.project.entity.common.CommonEntity;
 import com.catdev.project.jwt.exception.ErrorResponse;
 import com.catdev.project.jwt.exception.ProductException;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
@@ -122,7 +121,7 @@ public class UserServiceImpl implements UserService {
         page = userRepository.findAll(CommonUtil.buildPageable(pageIndex, pageSize));
         Page<UserDto> userDtoPage = page.map(this::convertToDto);
         ListResponseDto<UserDto> result = new ListResponseDto<>();
-        return result.buildResponseList(userDtoPage, pageSize, pageIndex, userDtoPage.getContent());
+        return result.buildResponseList(userDtoPage, pageSize, pageIndex);
     }
 
     @Override
