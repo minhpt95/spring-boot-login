@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewsEntity extends CommonEntity {
+
     @Column
     private String title;
 

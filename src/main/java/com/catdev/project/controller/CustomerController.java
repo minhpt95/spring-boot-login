@@ -21,7 +21,7 @@ public class CustomerController {
 
         curriculumVitaeService.createCV(createCVReq);
 
-        var responseDto = new ResponseDto();
+        var responseDto = new ResponseDto<>();
         responseDto.setErrorCode(ErrorConstant.Type.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Code.SUCCESS);
         responseDto.setMessage(ErrorConstant.Message.SUCCESS);
