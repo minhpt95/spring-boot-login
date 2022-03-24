@@ -1,6 +1,5 @@
 package com.catdev.project.readable.request;
 
-import liquibase.pro.packaged.A;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

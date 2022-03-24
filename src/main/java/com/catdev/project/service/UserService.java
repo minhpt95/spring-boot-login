@@ -3,7 +3,7 @@ package com.catdev.project.service;
 
 
 import com.catdev.project.dto.ListResponseDto;
-import com.catdev.project.dto.User.UserDto;
+import com.catdev.project.dto.user.UserDto;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.readable.form.createForm.CreateUserForm;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;

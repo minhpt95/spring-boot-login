@@ -2,7 +2,7 @@ package com.catdev.project.controller;
 
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ResponseDto;
-import com.catdev.project.dto.User.UserDto;
+import com.catdev.project.dto.user.UserDto;
 import com.catdev.project.jwt.JwtProvider;
 import com.catdev.project.readable.form.updateForm.UpdateUserForm;
 import com.catdev.project.readable.request.ChangePasswordReq;

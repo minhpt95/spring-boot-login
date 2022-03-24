@@ -3,7 +3,7 @@ package com.catdev.project.service.impl;
 import com.catdev.project.constant.CommonConstant;
 import com.catdev.project.constant.ErrorConstant;
 import com.catdev.project.dto.ListResponseDto;
-import com.catdev.project.dto.User.UserDto;
+import com.catdev.project.dto.user.UserDto;
 import com.catdev.project.entity.UserEntity;
 import com.catdev.project.jwt.exception.ErrorResponse;
 import com.catdev.project.jwt.exception.ProductException;
