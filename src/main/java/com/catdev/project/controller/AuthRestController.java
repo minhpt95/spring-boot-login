@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -111,7 +112,7 @@ public class AuthRestController {
 
         RefreshTokenEntity refreshToken = refreshTokenService.createRefreshToken(user);
 
-        List<String> roles = userPrinciple.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        List<String> roles = userPrinciple.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         responseDto.setErrorCode(ErrorConstant.Code.SUCCESS);
         responseDto.setErrorType(ErrorConstant.Type.SUCCESS);

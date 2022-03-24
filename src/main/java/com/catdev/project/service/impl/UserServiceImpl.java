@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.catdev.project.util.EmailValidateUtil.isAddressValid;
 
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> userEntities = userRepository.findAll().stream().peek(x -> {
             x.setTokenStatus(false);
             x.setAccessToken(null);
-        }).toList();
+        }).collect(Collectors.toList());
 
         if(userEntities.isEmpty()){
             return;

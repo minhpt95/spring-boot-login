@@ -2,12 +2,11 @@ package com.catdev.project.dto;
 
 import org.springframework.data.domain.Page;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class ListResponseDto<T> implements Serializable {
-    @Serial
+
     private static final long serialVersionUID = -3931471505590865499L;
 
     private int pageSize;
