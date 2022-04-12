@@ -59,20 +59,21 @@ public class ProjectApplication extends SpringBootServletInitializer {
         log.info("TimeZone : {} , Instant : {} , Timestamp : {}", TimeZone::getDefault, Instant::now,() -> Timestamp.from(Instant.now()));
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void testLib(){
-//        String numberToText = convertMoneyToText("123456789012345");
-//        logger.info("Number to text : {}",() -> numberToText);
-//    }
-//
-//    public static String convertMoneyToText(String input) {
-//        String output = "";
-//        try {
-//            NumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("vi", "VN"), RuleBasedNumberFormat.SPELLOUT);
-//            output = ruleBasedNumberFormat.format(Long.parseLong(input)) + " Đồng";
-//        } catch (Exception e) {
-//            output = "Không đồng";
-//        }
-//        return output.toUpperCase();
-//    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void testLib(){
+        String numberToText = convertMoneyToText("123456789012345");
+        log.info("Number to text : {}",() -> numberToText);
+    }
+
+    public static String convertMoneyToText(String input) {
+        String output = "";
+        try {
+            NumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("vi", "VN"), RuleBasedNumberFormat.SPELLOUT);
+            output = ruleBasedNumberFormat.format(Long.parseLong(input)) + " Đồng";
+        } catch (Exception e) {
+            output = "Không đồng";
+        }
+        return output.toUpperCase();
+    }
 }
