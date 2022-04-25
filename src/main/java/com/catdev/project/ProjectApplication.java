@@ -1,6 +1,7 @@
 package com.catdev.project;
 
 import com.catdev.project.service.UserService;
+import com.catdev.project.util.CommonUtil;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Locale;
 import java.util.TimeZone;
+
+
 
 @SpringBootApplication
 @EntityScan(basePackages = {"com.catdev.project"})
@@ -59,21 +61,10 @@ public class ProjectApplication extends SpringBootServletInitializer {
         log.info("TimeZone : {} , Instant : {} , Timestamp : {}", TimeZone::getDefault, Instant::now,() -> Timestamp.from(Instant.now()));
     }
 
-
     @EventListener(ApplicationReadyEvent.class)
     public void testLib(){
-        String numberToText = convertMoneyToText("123456789012345");
+        String numberToText = CommonUtil.convertMoneyToText("123456789012345");
         log.info("Number to text : {}",() -> numberToText);
     }
 
-    public static String convertMoneyToText(String input) {
-        String output = "";
-        try {
-            NumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("vi", "VN"), RuleBasedNumberFormat.SPELLOUT);
-            output = ruleBasedNumberFormat.format(Long.parseLong(input)) + " Đồng";
-        } catch (Exception e) {
-            output = "Không đồng";
-        }
-        return output.toUpperCase();
-    }
 }
