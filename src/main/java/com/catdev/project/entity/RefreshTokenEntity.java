@@ -1,17 +1,16 @@
 package com.catdev.project.entity;
 
+import com.catdev.project.entity.common.DateTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity(name = "refresh_token")
 @Getter
 @Setter
-public class RefreshTokenEntity {
+public class RefreshTokenEntity extends DateTimeEntity {
     @Id
     @GeneratedValue(generator = "spring_seq")
     @SequenceGenerator(name = "spring_seq",sequenceName = "refresh_token_seq",allocationSize = 1)
@@ -27,16 +26,4 @@ public class RefreshTokenEntity {
 
     @Column(nullable = false)
     private Instant expiryDate;
-
-    @Column
-    private Instant createdDate;
-
-    @Column
-    private Long createdBy;
-
-    @Column
-    private Instant modifiedDate;
-
-    @Column
-    private Long modifiedBy;
 }
