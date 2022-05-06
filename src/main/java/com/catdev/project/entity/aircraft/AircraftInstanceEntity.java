@@ -20,7 +20,15 @@ public class AircraftInstanceEntity extends DateTimeEntity {
     @Column
     private int aircraftInstanceId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+        }
+    )
     @JoinColumn(name = "aircraft_id")
     private AircraftEntity aircraft;
 }
