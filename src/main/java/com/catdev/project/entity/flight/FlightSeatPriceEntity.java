@@ -1,6 +1,7 @@
 package com.catdev.project.entity.flight;
 
 import com.catdev.project.entity.aircraft.AircraftSeatEntity;
+import com.catdev.project.entity.common.CommonEntity;
 import com.catdev.project.entity.common.DateTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
@@ -16,7 +18,10 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlightSeatPrice extends DateTimeEntity {
+public class FlightSeatPriceEntity extends DateTimeEntity {
+
+    @EmbeddedId
+    private FlightSeatPriceEntityId flightSeatPriceEntityId;
 
     @Column
     public BigDecimal price;
@@ -30,10 +35,16 @@ public class FlightSeatPrice extends DateTimeEntity {
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-class FlightSeatPriceId {
+class FlightSeatPriceEntityId implements Serializable {
+
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "flight_id")
+    private FlightEntity flight;
+
+
     @ManyToOne
     @JoinColumn(name = "seat_id")
     private AircraftSeatEntity aircraftSeat;
-
-
 }

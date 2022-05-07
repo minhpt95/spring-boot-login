@@ -34,8 +34,9 @@ class FlightAircraftId implements Serializable {
     @Serial
     private static final long serialVersionUID = 5490723779475354932L;
 
-    @Column
-    private Long flightId;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(updatable = false, nullable = false)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "aircraft_instance_id")

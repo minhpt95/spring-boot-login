@@ -19,10 +19,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class AircraftEntity extends DateTimeEntity {
 
-    @Id
-    @Column
-    private Long aircraftId;
-
     @Column
     private String model;
 
